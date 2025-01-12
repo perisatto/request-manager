@@ -1,12 +1,12 @@
 spring:
   application:
-    name: menuguru-customer
+    name: request-manager
   jackson:
     deserialization:
       fail-on-unknown-properties: true     
 server:
   servlet:
-    context-path: "/menuguru-customer/v1"      
+    context-path: "/request-manager/v1"      
 ---    
 spring:
   config:
