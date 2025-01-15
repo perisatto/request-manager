@@ -41,11 +41,11 @@ public class CreateRequestUseCase {
 			requestManagement.updateRequest(request);
 		}
 				
-		return request;		
+		return request;
 	}
 
 	private String getUserIdFromToken() {
 		// TODO create function to get userId attribute from authentication token
-		return null;
+		return "me";
 	}
 }
