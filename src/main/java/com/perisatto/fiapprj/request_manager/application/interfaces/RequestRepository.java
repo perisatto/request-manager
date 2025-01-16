@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import com.perisatto.fiapprj.request_manager.domain.entities.Request;
 
-public interface RequestManagement {
+public interface RequestRepository {
 
 	Request createRequest(Request request) throws Exception;
 

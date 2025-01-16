@@ -31,7 +31,7 @@ public class RequestManagerRestController {
 	public ResponseEntity<CreateRequestResponseDTO> createCustomer(@PathVariable(value = "userId") String userId, @RequestBody CreateRequestRequestDTO createRequest) throws Exception {
 		requestProperties.setProperty("resourcePath", "/users/" + userId + "/resources");
 
-		Request request = createRequestUseCase.createRequest(userId, createRequest.getInterval(), createRequest.getVideoFile());		
+		Request request = createRequestUseCase.createRequest(userId, createRequest.getInterval(), createRequest.getVideoFileName());		
 		ModelMapper requestMapper = new ModelMapper();
 		CreateRequestResponseDTO response = requestMapper.map(request, CreateRequestResponseDTO.class);
 		URI location = new URI("/users/" + userId + "/requests/" + response.getId());

@@ -6,7 +6,7 @@ public class CreateRequestResponseDTO {
 	private String id;
 	private Integer interval;
 	private RequestStatus status;
-	
+	private String videoUploadUrl;
 	
 	public String getId() {
 		return id;
@@ -25,7 +25,11 @@ public class CreateRequestResponseDTO {
 	}
 	public void setStatus(RequestStatus status) {
 		this.status = status;
+	}	
+	public String getVideoUploadUrl() {
+		return videoUploadUrl;
 	}
-	
-	
+	public void setVideoUploadUrl(String videoUploadUrl) {
+		this.videoUploadUrl = videoUploadUrl;
+	}
 }

@@ -2,7 +2,7 @@ package com.perisatto.fiapprj.request_manager.infra.controllers.dtos;
 
 public class CreateRequestRequestDTO {
 	private Integer interval;
-	private String videoFile;
+	private String videoFileName;
 	
 	public Integer getInterval() {
 		return interval;
@@ -10,11 +10,11 @@ public class CreateRequestRequestDTO {
 	public void setInterval(Integer interval) {
 		this.interval = interval;
 	}
-	public String getVideoFile() {
-		return videoFile;
+	public String getVideoFileName() {
+		return videoFileName;
 	}
-	public void setVideoFile(String videoFile) {
-		this.videoFile = videoFile;
+	public void setVideoFileName(String videoFile) {
+		this.videoFileName = videoFile;
 	}
 	
 	

@@ -1,8 +1,6 @@
 package com.perisatto.fiapprj.request_manager.domain.entities;
 
-import java.io.ByteArrayInputStream;
-import java.net.URLConnection;
-import java.util.Base64;
+import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -15,12 +13,13 @@ public class Request {
 	private String owner;
 	private Integer interval;
 	private RequestStatus status;
-	private String videoFile;
+	private String videoFileName;
 	private String remarks;
+	private String videoUploadUrl;
 
 	static final Logger logger = LogManager.getLogger(Request.class);
 
-	public Request(String owner, Integer interval, String videoFile) throws ValidationException {
+	public Request(String owner, Integer interval, String videoFileName) throws ValidationException {
 
 		if((owner == null) || (owner.isEmpty()) || (owner.isBlank())) {
 			logger.debug("Error validating request data: null or empty owner");
@@ -32,43 +31,29 @@ public class Request {
 			throw new ValidationException("rqst-1001", "Error validating request data: invalid interval value");
 		}
 
-		if((videoFile == null) || (videoFile.isEmpty()) || (videoFile.isBlank())){
-			logger.debug("Error validating product data: empty, null or blank videoFile");
-			throw new ValidationException("rqst-1001", "Error validating product data: empty, null or blank videoFile");			
-		} else {			
-			if(!isValidVideoFile(videoFile)) {
-				logger.debug("Error validating request data: invalid Base64 file type (must be a video)");
-				throw new ValidationException("rqst-1001", "Error validating request data: invalid Base64 file type (must be a video)");		        	
-			}
+		if((videoFileName == null) || (videoFileName.isEmpty()) || (videoFileName.isBlank())){
+			logger.debug("Error validating request data: empty, null or blank videoFileName");
+			throw new ValidationException("rqst-1001", "Error validating product data: empty, null or blank videoFileName");			
 		}
 
+		this.id = UUID.randomUUID().toString();		
 		this.owner = owner;
 		this.interval = interval;
-		this.videoFile = videoFile;
-	}
-
-	private Boolean isValidVideoFile(String videoFile) throws ValidationException {
-		try	{
-			byte[] decodedBytes = Base64.getDecoder().decode(videoFile);
-
-			ByteArrayInputStream inputStream = new ByteArrayInputStream(decodedBytes);
-			String mimeType = URLConnection.guessContentTypeFromStream(inputStream);
-			if((mimeType == null) || (!mimeType.startsWith("video"))) {
-				return false;		        	
-			}
-		} catch (Exception e) {
-			logger.debug("Error validating request data: invalid Base64 image file");
-			throw new ValidationException("rqst-1001", "Error validating request data: invalid Base64 image file");				
-		}
-
-		return true;
+		this.videoFileName = videoFileName;
 	}
 
 	public String getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(String id) throws ValidationException {
+		try {
+			UUID.fromString(id);
+		}catch (Exception IllegalArgumentException) {
+			logger.debug("Error validating request data: invalid UUID");
+			throw new ValidationException("rqst-1001", "Error validating request data: invalid UUID");
+		}
+		
 		this.id = id;
 	}
 
@@ -76,7 +61,12 @@ public class Request {
 		return owner;
 	}
 
-	public void setOwner(String owner) {
+	public void setOwner(String owner) throws ValidationException {		
+		if((owner == null) || (owner.isEmpty()) || (owner.isBlank())) {
+			logger.debug("Error validating request data: null or empty owner");
+			throw new ValidationException("rqst-1001", "Error validating request data: null or empty owner");
+		}		
+		
 		this.owner = owner;
 	}
 
@@ -84,7 +74,12 @@ public class Request {
 		return interval;
 	}
 
-	public void setInterval(Integer interval) {
+	public void setInterval(Integer interval) throws ValidationException {
+		if((interval == null) || (interval < 10)) {
+			logger.debug("Error validating request data: invalid interval value");
+			throw new ValidationException("rqst-1001", "Error validating request data: invalid interval value");
+		}
+		
 		this.interval = interval;
 	}
 
@@ -96,22 +91,17 @@ public class Request {
 		this.status = status;
 	}
 
-	public String getVideoFile() {
-		return videoFile;
+	public String getVideoFileName() {
+		return videoFileName;
 	}
 
-	public void setVideoFile(String videoFile) throws ValidationException {
-		if((videoFile == null) || (videoFile.isEmpty()) || (videoFile.isBlank())){
-			logger.debug("Error validating product data: empty, null or blank videoFile");
-			throw new ValidationException("rqst-1001", "Error validating product data: empty, null or blank videoFile");			
-		} else {			
-			if(!isValidVideoFile(videoFile)) {
-				logger.debug("Error validating request data: invalid Base64 file type (must be a video)");
-				throw new ValidationException("rqst-1001", "Error validating request data: invalid Base64 file type (must be a video)");		        	
-			}
+	public void setVideoFileName(String videoFileName) throws ValidationException {
+		if((videoFileName == null) || (videoFileName.isEmpty()) || (videoFileName.isBlank())){
+			logger.debug("Error validating request data: empty, null or blank videoFileName");
+			throw new ValidationException("rqst-1001", "Error validating request data: empty, null or blank videoFileName");			
 		}
 		
-		this.videoFile = videoFile;
+		this.videoFileName = videoFileName;
 	}
 
 	public String getRemarks() {
@@ -120,5 +110,13 @@ public class Request {
 
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+
+	public String getVideoUploadUrl() {
+		return videoUploadUrl;
+	}
+
+	public void setVideoUploadUrl(String videoUploadUrl) {
+		this.videoUploadUrl = videoUploadUrl;
 	}
 }

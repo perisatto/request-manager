@@ -1,13 +1,13 @@
 openapi: 3.0.3
 info:
   title: Request Manager
-  description: Fictitious video trimmer system as part of the evaluation work for the Postgraduate course in Software Architecture at FIAP. Request Manager service main objective is to receive the request to process a video file and manage the request status.
+  description: Fictitious video trimmer system as part of the evaluation work for the Postgraduate course in Software Architecture at FIAP. Request Manager service mains objective is to receive the request to process a video file and manage the request status.
   version: 1.0.0
 externalDocs:
-  description: Find out more about the project
+  description: Find out more about the project at Github
   url: https://github.com/perisatto/request-manager
 servers:
-  - url: /request-manager/v1
+  - url: https://<host-address>/request-manager/v1
 tags:
   - name: requests
     description: Manage the requests
@@ -21,81 +21,27 @@ paths:
       operationId: createRequest
       parameters: 
         - name: userId
-          description: Unique key that identifies the user owner of the request. When informed "me" value, the user id is extracted from bearer token. 
+          description: Unique key that identifies the user owner of the request. When informed "me" as userId parameter value, the user id is extracted from bearer token. 
           in: path
           required: true
           example: johncena
           schema:
             type: string
       requestBody:
-        description: Operation attributes request.
-        content:
-          application/json:
-            schema:
-              allOf:
-                - $ref: '#/components/schemas/Request'
-              required:
-                - interval
-                - videoFile
+        $ref: '#/components/requestBodies/CreateRequestRequest'
       responses:
         '201':
-          description: Request created.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Request'
-          headers: 
-            Location:
-              description: Location of the new request processing
-              schema:
-                type: string
-                example: /users/johncena/requests/62c7e909-2fac-40f1-b8c1-89a5d56a9c3c
+          $ref: '#/components/responses/CreateRequestResponse'
         '400':
-            description: Bad request
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorTemplate'
-                example:
-                  type: about:blank
-                  tittle: Bad request
-                  detail: Malformed request or unknown fields
-                  instance: /users/johncena/requests
+          $ref: '#/components/responses/BadRequest'
         '406':
             description: Not acceptable
         '415':
-            description: Unsupported Media Type
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorTemplate'
-                example:
-                  type: about:blank
-                  tittle: Unsupported Media Type
-                  detail: Content-Type 'text/plain' is not supported
-                  instance: /users/johncena/requests
+          $ref: '#/components/responses/UnsupportedMediaType'
         '422':
-            description: Unprocessable entity
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorTemplate'
-                example:
-                  type: about:blank
-                  tittle: Unprocessable entity
-                  detail: Invalid video file
-                  instance: /users/johncena/requests
+          $ref: '#/components/responses/UnprocessableEntity'
         '500':
-            description: Internal Server Error
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorTemplate'
-                example:
-                  type: about:blank
-                  tittle: Internal Server Error
-                  detail: A error ocurred during the operation. Please refer to application log for details
-                  instance: /users/johncena/requests               
+          $ref: '#/components/responses/InternalServerError'
       security: 
         - authorization: []
     get:
@@ -128,66 +74,17 @@ paths:
               $ref: '#/components/schemas/SizeParameter' 
       responses:
         '200':
-          description: Successful operation
-          content:
-            application/json:
-              schema:
-                allOf:
-                  - $ref: '#/components/schemas/PageTemplate'
-                  - type: object
-                    properties:
-                      _content:
-                        description: Itens retrieved. If there is no item the list will be empty
-                        type: array
-                        items:
-                          allOf:
-                          - $ref: '#/components/schemas/Request'              
+          $ref: '#/components/responses/ListRequests'     
         '400':
-            description: Bad request
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorTemplate'
-                example:
-                  type: about:blank
-                  tittle: Bad request
-                  detail: Malformed request or unknown fields
-                  instance: /users/johncena/requests
+          $ref: '#/components/responses/BadRequest'
         '406':
             description: Not acceptable
         '415':
-            description: Unsupported Media Type
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorTemplate'
-                example:
-                  type: about:blank
-                  tittle: Unsupported Media Type
-                  detail: Content-Type 'text/plain' is not supported
-                  instance: /users/johncena/requests
+          $ref: '#/components/responses/UnsupportedMediaType'
         '422':
-            description: Unprocessable entity
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorTemplate'
-                example:
-                  type: about:blank
-                  tittle: Unprocessable entity
-                  detail: Invalid _size parameter
-                  instance: /users/johncena/requests
+          $ref: '#/components/responses/UnprocessableEntity'
         '500':
-            description: Internal Server Error
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorTemplate'
-                example:
-                  type: about:blank
-                  tittle: Internal Server Error
-                  detail: A error ocurred during the operation. Please refer to application log for details
-                  instance: /users/johncena/requests                          
+          $ref: '#/components/responses/InternalServerError'                        
       security: 
         - authorization: []
   /users/{userId}/requests/{requestId}:
@@ -215,57 +112,17 @@ paths:
             format: uuid
       responses:
         '200':
-          description: Succesful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Request'
+          $ref: '#/components/responses/GetRequest'
         '400':
-            description: Bad request
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorTemplate'
-                example:
-                  type: about:blank
-                  tittle: Bad request
-                  detail: Malformed request or unknown fields
-                  instance: /users/johncena/requests/6af8d995-edde-4b69-aaf8-c5bfd02c85ab
+          $ref: '#/components/responses/BadRequest'
         '406':
             description: Not acceptable
         '415':
-            description: Unsupported Media Type
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorTemplate'
-                example:
-                  type: about:blank
-                  tittle: Unsupported Media Type
-                  detail: Content-Type 'text/plain' is not supported
-                  instance: /users/johncena/requests/6af8d995-edde-4b69-aaf8-c5bfd02c85ab
+          $ref: '#/components/responses/UnsupportedMediaType'
         '422':
-            description: Unprocessable entity
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorTemplate'
-                example:
-                  type: about:blank
-                  tittle: Unprocessable entity
-                  detail: Invalid _size parameter
-                  instance: /users/johncena/requests/6af8d995-edde-4b69-aaf8-c5bfd02c85ab
+          $ref: '#/components/responses/UnprocessableEntity'
         '500':
-            description: Internal Server Error
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorTemplate'
-                example:
-                  type: about:blank
-                  tittle: Internal Server Error
-                  detail: A error ocurred during the operation. Please refer to application log for details
-                  instance: /users/johncena/requests/6af8d995-edde-4b69-aaf8-c5bfd02c85ab
+          $ref: '#/components/responses/InternalServerError'
       security: 
         - authorization: []
     patch:
@@ -291,64 +148,20 @@ paths:
             type: string
             format: uuid
       requestBody:
-        description: Updates a customer
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Request'            
+        $ref: '#/components/requestBodies/UpdateRequest'
       responses:
         '200':
-          description: Succesful operation
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Request'
+          $ref: '#/components/responses/GetRequest'
         '400':
-            description: Bad request
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorTemplate'
-                example:
-                  type: about:blank
-                  tittle: Bad request
-                  detail: Malformed request or unknown fields
-                  instance: /users/johncena/requests/6af8d995-edde-4b69-aaf8-c5bfd02c85ab
+          $ref: '#/components/responses/BadRequest'
         '406':
             description: Not acceptable
         '415':
-            description: Unsupported Media Type
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorTemplate'
-                example:
-                  type: about:blank
-                  tittle: Unsupported Media Type
-                  detail: Content-Type 'text/plain' is not supported
-                  instance: /users/johncena/requests/6af8d995-edde-4b69-aaf8-c5bfd02c85ab
+          $ref: '#/components/responses/UnsupportedMediaType'
         '422':
-            description: Unprocessable entity
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorTemplate'
-                example:
-                  type: about:blank
-                  tittle: Unprocessable entity
-                  detail: Invalid _size parameter
-                  instance: /users/johncena/requests/6af8d995-edde-4b69-aaf8-c5bfd02c85ab
+          $ref: '#/components/responses/UnprocessableEntity'
         '500':
-            description: Internal Server Error
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorTemplate'
-                example:
-                  type: about:blank
-                  tittle: Internal Server Error
-                  detail: A error ocurred during the operation. Please refer to application log for details
-                  instance: /users/johncena/requests/6af8d995-edde-4b69-aaf8-c5bfd02c85ab
+          $ref: '#/components/responses/InternalServerError'
       security: 
         - authorization: []
     delete:
@@ -377,54 +190,136 @@ paths:
         '204':
           description: No content            
         '400':
-            description: Bad request
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorTemplate'
-                example:
-                  type: about:blank
-                  tittle: Bad request
-                  detail: Malformed request or unknown fields
-                  instance: /users/johncena/requests/6af8d995-edde-4b69-aaf8-c5bfd02c85ab
+          $ref: '#/components/responses/BadRequest'
         '406':
             description: Not acceptable
         '415':
-            description: Unsupported Media Type
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorTemplate'
-                example:
-                  type: about:blank
-                  tittle: Unsupported Media Type
-                  detail: Content-Type 'text/plain' is not supported
-                  instance: /users/johncena/requests/6af8d995-edde-4b69-aaf8-c5bfd02c85ab
+          $ref: '#/components/responses/UnsupportedMediaType'
         '422':
-            description: Unprocessable entity
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorTemplate'
-                example:
-                  type: about:blank
-                  tittle: Unprocessable entity
-                  detail: Invalid _size parameter
-                  instance: /users/johncena/requests/6af8d995-edde-4b69-aaf8-c5bfd02c85ab
+          $ref: '#/components/responses/UnprocessableEntity'
         '500':
-            description: Internal Server Error
-            content:
-              application/json:
-                schema:
-                  $ref: '#/components/schemas/ErrorTemplate'
-                example:
-                  type: about:blank
-                  tittle: Internal Server Error
-                  detail: A error ocurred during the operation. Please refer to application log for details
-                  instance: /users/johncena/requests/6af8d995-edde-4b69-aaf8-c5bfd02c85ab
+          $ref: '#/components/responses/InternalServerError'
       security: 
         - authorization: []
 components:
+  requestBodies:
+    CreateRequestRequest:
+      description: Operation attributes request.
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Request'
+            required:
+              - interval
+              - videoFileName
+    UpdateRequest:
+      description: Updates a customer
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Request'
+              - type: object
+                properties:
+                  status: 
+                    $ref: '#/components/schemas/RequestStatus'
+  responses:
+    CreateRequestResponse:
+      description: Request created.
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Request'
+              - type: object
+                properties:
+                  status:
+                    $ref: '#/components/schemas/RequestStatus'
+              - type: object
+                properties:
+                  videoUploadUrl:
+                    $ref: '#/components/schemas/VideoUploadUrl'
+      headers: 
+        Location:
+          description: Location of the new request processing
+          schema:
+            type: string
+            example: /users/johncena/requests/62c7e909-2fac-40f1-b8c1-89a5d56a9c3c 
+    ListRequests:
+      description: Successful operation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/PageTemplate'
+              - type: object
+                properties:
+                  _content:
+                    description: Itens retrieved. If there is no item the list will be empty
+                    type: array
+                    items:
+                      allOf:
+                        - $ref: '#/components/schemas/Request'
+                        - type: object
+                          properties:
+                            status:
+                              $ref: '#/components/schemas/RequestStatus'
+    GetRequest:
+      description: Succesful operation
+      content:
+        application/json:
+          schema:
+            allOf:
+              - $ref: '#/components/schemas/Request'
+              - type: object
+                properties:
+                  status:
+                    $ref: '#/components/schemas/RequestStatus'            
+    BadRequest:
+      description: Bad request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorTemplate'
+          example:
+            type: about:blank
+            tittle: Bad request
+            detail: Malformed request or unknown fields
+            instance: /users/johncena/requests    
+    UnsupportedMediaType:
+      description: Unsupported Media Type
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorTemplate'
+          example:
+            type: about:blank
+            tittle: Unsupported Media Type
+            detail: Content-Type 'text/plain' is not supported
+            instance: /users/johncena/requests
+    UnprocessableEntity:
+      description: Unprocessable entity
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorTemplate'
+          example:
+            type: about:blank
+            tittle: Unprocessable entity
+            detail: Invalid video file
+            instance: /users/johncena/requests      
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorTemplate'
+          example:
+            type: about:blank
+            tittle: Internal Server Error
+            detail: A error ocurred during the operation. Please refer to application log for details
+            instance: /users/johncena/requests                   
   schemas:
     TypeIdRequest:
       type: string
@@ -434,10 +329,12 @@ components:
       type: string
       description: identifies the phase of request processing
       enum:
-        - PENDING
+        - PENDING_UPLOAD
+        - PENDING_PROCESS
         - PROCESSING
         - ERROR
         - COMPLETED
+        - EXPIRATED
     Request:
       type: object
       description: A request to process a video file to extract image files from each frame of a duration specified.
@@ -452,16 +349,16 @@ components:
           format: int64
           minimum: 10
           example: 10
-        videoFile:
-          description: Raw video file intended to process.
+        videoFileName:
+          description: Name of the video file intended to process.
           type: string
-          format: base64
-          example: iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNk+A8AAQUBAScY42YAAAAASUVORK5CYII=
+          example: JohnCenaChairFight.mpeg
           writeOnly: true
-        status:
-          allOf:
-            - $ref: '#/components/schemas/RequestStatus'
-          readOnly: true
+    VideoUploadUrl:
+      type: string
+      description: URL used to upload the video file intended to process
+      format: URI
+      example: https://www.videoframecut.com/upload/3fa85f64-5717-4562-b3fc-2c963f66afa6
     PageParameter:
       type: integer
       minimum: 1

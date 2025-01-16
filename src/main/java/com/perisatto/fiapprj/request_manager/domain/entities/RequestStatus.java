@@ -2,10 +2,12 @@ package com.perisatto.fiapprj.request_manager.domain.entities;
 
 public enum RequestStatus {
 	
-	PENDING(1L),
-	PROCESSING(2L),
-	ERROR(3L),
-	COMPLETED(4L);
+	PENDING_UPLOAD(1L),
+	PENDING_PROCESS(2L),
+	PROCESSING(3L),
+	ERROR(4L),
+	COMPLETED(5L),
+	EXPIRATED(6L);
 	
 	private Long id;
 	

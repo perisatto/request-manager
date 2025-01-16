@@ -15,15 +15,17 @@ spring:
     activate:
       on-profile:
       - docker
-  
-  datasource:
-    driverClassName: com.mysql.cj.jdbc.Driver  
-    url: jdbc:mysql://${MYSQL_URL}/request-manager
-    username: ${MYSQL_USER}
-    password: ${MYSQL_PASSWORD}
+  sql:
+    init:
+      mode: always
+  datasource: 
+    url: jdbc:h2:mem:testdb
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
   jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      naming:
-        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      ddl-auto: none
   cognito:
     userPoolId: ${AWS_COGNITO_USER_POOL_ID}
