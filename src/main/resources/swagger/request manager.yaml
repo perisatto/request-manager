@@ -354,9 +354,14 @@ components:
           type: string
           example: JohnCenaChairFight.mpeg
           writeOnly: true
+        videoDownloadUrl:
+          description: URL to download the compress file with images generated from the video file.
+          type: string
+          example: https://www.videoframecut.com/upload/3fa85f64-5717-4562-b3fc-2c963f66afa6
+          readOnly: true
     VideoUploadUrl:
       type: string
-      description: URL used to upload the video file intended to process
+      description: URL to upload the video file intended to process
       format: URI
       example: https://www.videoframecut.com/upload/3fa85f64-5717-4562-b3fc-2c963f66afa6
     PageParameter:
