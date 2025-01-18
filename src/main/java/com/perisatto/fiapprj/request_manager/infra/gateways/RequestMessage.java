@@ -5,6 +5,8 @@ import java.io.Serializable;
 import com.perisatto.fiapprj.request_manager.domain.entities.RequestStatus;
 
 public class RequestMessage implements Serializable {
+
+	private static final long serialVersionUID = 1L;
 	
 	private Long idRequest;
 	private String id;

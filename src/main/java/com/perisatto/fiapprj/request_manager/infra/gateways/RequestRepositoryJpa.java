@@ -1,6 +1,13 @@
 package com.perisatto.fiapprj.request_manager.infra.gateways;
 
+import java.util.LinkedHashSet;
 import java.util.Optional;
+import java.util.Set;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
 import com.perisatto.fiapprj.request_manager.application.interfaces.RequestRepository;
 import com.perisatto.fiapprj.request_manager.domain.entities.Request;
@@ -50,4 +57,16 @@ public class RequestRepositoryJpa implements RequestRepository {
 		return Optional.of(request);
 	}
 
+	@Override
+	public Set<Request> findAll(Integer limit, Integer page, String owner) throws Exception {		
+		Pageable pageable = PageRequest.of(page, limit, Sort.by("idCustomer"));
+		Page<RequestEntity> requests = requestPersistenceRepository.findByOwner(owner, pageable);
+		Set<Request> requestsSet = new LinkedHashSet<Request>();
+		
+		for (RequestEntity request : requests) {
+			Request retrievedRequest = requestMapper.mapToDomainEntity(request);
+			requestsSet.add(retrievedRequest);
+		}
+		return requestsSet;
+	}
 }

@@ -7,6 +7,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,23 +15,27 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.perisatto.fiapprj.request_manager.application.usecases.CreateRequestUseCase;
+import com.perisatto.fiapprj.request_manager.application.usecases.GetRequestUseCase;
 import com.perisatto.fiapprj.request_manager.application.usecases.UpdateRequestUseCase;
 import com.perisatto.fiapprj.request_manager.domain.entities.Request;
 import com.perisatto.fiapprj.request_manager.domain.entities.RequestStatus;
 import com.perisatto.fiapprj.request_manager.infra.controllers.dtos.CreateRequestRequestDTO;
 import com.perisatto.fiapprj.request_manager.infra.controllers.dtos.CreateRequestResponseDTO;
-import com.perisatto.fiapprj.request_manager.infra.controllers.dtos.UpdateRequestResponseDTO;
+import com.perisatto.fiapprj.request_manager.infra.controllers.dtos.GetRequestResponseDTO;
 import com.perisatto.fiapprj.request_manager.infra.controllers.dtos.UpdateRequestRequestDTO;
+import com.perisatto.fiapprj.request_manager.infra.controllers.dtos.UpdateRequestResponseDTO;
 
 @RestController
 public class RequestManagerRestController {
 	private final CreateRequestUseCase createRequestUseCase;
 	private final UpdateRequestUseCase updateRequestUseCase;
+	private final GetRequestUseCase getRequestUseCase;
 	private final Properties requestProperties;
 
-	public RequestManagerRestController(CreateRequestUseCase createRequestUseCase, Properties requestProperties, UpdateRequestUseCase updateRequestUseCase) {
+	public RequestManagerRestController(CreateRequestUseCase createRequestUseCase, Properties requestProperties, UpdateRequestUseCase updateRequestUseCase, GetRequestUseCase getRequestUseCase) {
 		this.createRequestUseCase = createRequestUseCase;
 		this.updateRequestUseCase = updateRequestUseCase;
+		this.getRequestUseCase = getRequestUseCase;
 		this.requestProperties = requestProperties;
 	}
 
@@ -43,6 +48,16 @@ public class RequestManagerRestController {
 		CreateRequestResponseDTO response = requestMapper.map(request, CreateRequestResponseDTO.class);
 		URI location = new URI("/users/" + userId + "/requests/" + response.getId());
 		return ResponseEntity.status(HttpStatus.CREATED).location(location).body(response);
+	}
+	
+	@GetMapping(value = "/users/{userId}/requests/{requestId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<GetRequestResponseDTO> get(@PathVariable(value = "userId") String userId, @PathVariable(value = "requestId") String requestId) throws Exception {
+		requestProperties.setProperty("resourcePath", "/users/" + userId + "/requests/" + requestId);
+		
+		Request request = getRequestUseCase.getRequestById(requestId);
+		ModelMapper requestMapper = new ModelMapper();
+		GetRequestResponseDTO response = requestMapper.map(request, GetRequestResponseDTO.class);
+		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 	
 	@PatchMapping(value = "/users/{userId}/requests/{requestId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)

@@ -12,8 +12,11 @@ import software.amazon.awssdk.auth.credentials.AwsCredentials;
 import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.s3.model.GetObjectRequest;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.GetObjectPresignRequest;
+import software.amazon.awssdk.services.s3.presigner.model.PresignedGetObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PresignedPutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
 
@@ -30,7 +33,7 @@ public class S3RepositoryManagement implements FileRepositoryManagement{
 	@Override
 	public String generateUploadFileURL(String id, String videoFile) {
 		
-		String awsS3Bucket = env.getProperty("spring.aws.s3bucket");
+		String awsS3Bucket = env.getProperty("spring.aws.s3UploadBucket");
 		String awsAccessKeyId = env.getProperty("spring.aws.accessKeyId");
 		String awsSecretAccessKey = env.getProperty("spring.aws.secretAccessKey");
 		String awsSessionToken = env.getProperty("spring.aws.sessionToken");
@@ -46,7 +49,7 @@ public class S3RepositoryManagement implements FileRepositoryManagement{
 		.build();
 				
 		PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
-		.signatureDuration(Duration.ofMinutes(2))  // The URL expires in 10 minutes.
+		.signatureDuration(Duration.ofMinutes(2))
 		.putObjectRequest(objectRequest)
 		.build();
 
@@ -62,5 +65,42 @@ public class S3RepositoryManagement implements FileRepositoryManagement{
 		logger.info("HTTP method: [{}]", presignedPutObjectRequest.httpRequest().method());
 
 		return presignedPutObjectRequest.url().toExternalForm();             
+	}
+
+	@Override
+	public String generateDownloadFileURL(String id, String videoFile) {
+		String awsS3Bucket = env.getProperty("spring.aws.s3DownloadBucket");
+		String awsAccessKeyId = env.getProperty("spring.aws.accessKeyId");
+		String awsSecretAccessKey = env.getProperty("spring.aws.secretAccessKey");
+		String awsSessionToken = env.getProperty("spring.aws.sessionToken");
+		Region awsRegion = Region.of(env.getProperty("spring.aws.region"));
+		
+		AwsCredentials credentials = AwsSessionCredentials.create(awsAccessKeyId, awsSecretAccessKey, awsSessionToken);
+		StaticCredentialsProvider credentialsProvider = StaticCredentialsProvider.create(credentials);
+		
+		GetObjectRequest objectRequest = GetObjectRequest.builder()
+		.bucket(awsS3Bucket)
+		.key(id + "_" + videoFile)
+		//.metadata(metadata)
+		.build();
+		
+		
+		GetObjectPresignRequest presignRequest = GetObjectPresignRequest.builder()
+		.signatureDuration(Duration.ofMinutes(2))
+		.getObjectRequest(objectRequest)
+		.build();
+
+        S3Presigner s3Presigner = S3Presigner.builder()
+                .credentialsProvider(credentialsProvider)
+                .region(awsRegion)
+                .build();
+        
+        PresignedGetObjectRequest presignedPutObjectRequest  = s3Presigner.presignGetObject(presignRequest);
+        
+		String myURL = presignedPutObjectRequest.url().toString();
+		logger.info("Presigned URL to upload a file to: [{}]", myURL);
+		logger.info("HTTP method: [{}]", presignedPutObjectRequest.httpRequest().method());
+
+		return presignedPutObjectRequest.url().toExternalForm(); 
 	}
 }
