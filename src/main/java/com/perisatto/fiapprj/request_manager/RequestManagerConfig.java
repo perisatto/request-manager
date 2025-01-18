@@ -8,11 +8,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 
-import com.perisatto.fiapprj.request_manager.application.interfaces.FileProcessingManagement;
-import com.perisatto.fiapprj.request_manager.application.interfaces.FileRepositoryManagement;
-import com.perisatto.fiapprj.request_manager.application.interfaces.RequestRepository;
-import com.perisatto.fiapprj.request_manager.application.usecases.CreateRequestUseCase;
-
 @Configuration
 public class RequestManagerConfig {
 	

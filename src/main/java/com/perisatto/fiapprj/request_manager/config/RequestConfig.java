@@ -1,7 +1,9 @@
 package com.perisatto.fiapprj.request_manager.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.env.Environment;
 
 import com.perisatto.fiapprj.request_manager.application.interfaces.FileRepositoryManagement;
 import com.perisatto.fiapprj.request_manager.application.interfaces.RequestRepository;
@@ -9,9 +11,14 @@ import com.perisatto.fiapprj.request_manager.application.usecases.CreateRequestU
 import com.perisatto.fiapprj.request_manager.infra.gateways.FileProcessorQueueManagement;
 import com.perisatto.fiapprj.request_manager.infra.gateways.RequestRepositoryJpa;
 import com.perisatto.fiapprj.request_manager.infra.gateways.S3RepositoryManagement;
+import com.perisatto.fiapprj.request_manager.infra.gateways.mappers.RequestMapper;
+import com.perisatto.fiapprj.request_manager.infra.persistences.repositories.RequestPersistenceRepository;
 
 @Configuration
 public class RequestConfig {
+	
+	@Autowired
+	private Environment env;
 	
 	@Bean
 	CreateRequestUseCase createRequestUseCase(RequestRepository requestManagement, FileRepositoryManagement fileRepositoryManagement) {
@@ -19,13 +26,18 @@ public class RequestConfig {
 	}
 		
 	@Bean
-	RequestRepositoryJpa requestRepositoryJpa() {
-		return new RequestRepositoryJpa();
+	RequestRepositoryJpa requestRepositoryJpa(RequestPersistenceRepository requestPersistenceRepository, RequestMapper requestMapper) {
+		return new RequestRepositoryJpa(requestPersistenceRepository, requestMapper);
 	}
 	
 	@Bean
-	S3RepositoryManagement s3RepositoryManagement(){
-		return new S3RepositoryManagement();
+	RequestMapper requestMapper() {
+		return new RequestMapper();
+	}
+	
+	@Bean
+	S3RepositoryManagement s3RepositoryManagement(Environment env){
+		return new S3RepositoryManagement(env);
 	}
 	
 	@Bean
