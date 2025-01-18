@@ -38,7 +38,7 @@ public class UpdateRequestUseCase {
 		}
 		
 		if(status == RequestStatus.PENDING_PROCESS) {
-			fileProcessingManagement.createProcessingRequest(request.get().getId(), request.get().getInterval(), request.get().getVideoFileName());
+			fileProcessingManagement.createProcessingRequest(updatedRequest);
 		}
 				
 		updatedRequest.setStatus(status);

@@ -31,3 +31,9 @@ spring:
     sessionToken: ${AWS_SESSION_TOKEN}
     region: ${AWS_REGION}
     s3bucket: ${AWS_S3_BUCKET}
+
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
