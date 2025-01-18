@@ -8,6 +8,8 @@ public class GetRequestResponseDTO {
 	private String videoFileName;
 	private String videoDownloadUrl;
 	private RequestStatus status;
+	private String remarks;
+	
 	public String getId() {
 		return id;
 	}
@@ -30,12 +32,26 @@ public class GetRequestResponseDTO {
 		return videoDownloadUrl;
 	}
 	public void setVideoDownloadUrl(String videoDownloadUrl) {
-		this.videoDownloadUrl = videoDownloadUrl;
+		if(videoDownloadUrl == null ) {
+			this.videoDownloadUrl = "";
+		} else {
+			this.videoDownloadUrl = videoDownloadUrl;
+		}
 	}
 	public RequestStatus getStatus() {
 		return status;
 	}
 	public void setStatus(RequestStatus status) {
 		this.status = status;
+	}
+	public String getRemarks() {
+		return remarks;
+	}
+	public void setRemarks(String remarks) {
+		if(remarks == null) {
+			this.remarks = "";
+		} else {
+			this.remarks = remarks;
+		}
 	}
 }
