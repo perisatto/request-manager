@@ -40,7 +40,7 @@ public class S3RepositoryManagement implements FileRepositoryManagement{
 		StaticCredentialsProvider credentialsProvider = StaticCredentialsProvider.create(credentials);
 		
 		PutObjectRequest objectRequest = PutObjectRequest.builder()
-		.bucket("peritest")
+		.bucket(awsS3Bucket)
 		.key(id + "_" + videoFile)
 		//.metadata(metadata)
 		.build();

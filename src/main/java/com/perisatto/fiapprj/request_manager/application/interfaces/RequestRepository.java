@@ -8,5 +8,7 @@ public interface RequestRepository {
 
 	Request createRequest(Request request) throws Exception;
 
-	Optional<Request> updateRequest(Request request);
+	Optional<Request> updateRequest(Request request) throws Exception;
+	
+	Optional<Request> getRequestById(String id) throws Exception;
 }

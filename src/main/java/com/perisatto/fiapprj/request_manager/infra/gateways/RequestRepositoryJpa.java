@@ -29,9 +29,25 @@ public class RequestRepositoryJpa implements RequestRepository {
 	}
 
 	@Override
-	public Optional<Request> updateRequest(Request request) {
-		// TODO Auto-generated method stub
-		return Optional.empty();
+	public Optional<Request> updateRequest(Request request) throws Exception {
+		RequestEntity requestEntity = requestMapper.mapToJpaEntity(request);
+		requestEntity = requestPersistenceRepository.save(requestEntity);
+		Request updatedRequest = requestMapper.mapToDomainEntity(requestEntity);
+		return Optional.of(updatedRequest);
+	}
+
+	@Override
+	public Optional<Request> getRequestById(String id) throws Exception {
+		Request request;
+		
+		Optional<RequestEntity> requestEntity = requestPersistenceRepository.findById(id);
+		if(requestEntity.isPresent()) {
+			request = requestMapper.mapToDomainEntity(requestEntity.get());
+		} else {
+			return Optional.empty();
+		}
+		
+		return Optional.of(request);
 	}
 
 }

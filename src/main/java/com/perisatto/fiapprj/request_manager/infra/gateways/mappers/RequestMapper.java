@@ -4,6 +4,8 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
 
 import com.perisatto.fiapprj.request_manager.domain.entities.Request;
+import com.perisatto.fiapprj.request_manager.domain.entities.RequestStatus;
+import com.perisatto.fiapprj.request_manager.handler.exceptions.ValidationException;
 import com.perisatto.fiapprj.request_manager.infra.persistences.entities.RequestEntity;
 
 public class RequestMapper {
@@ -28,8 +30,14 @@ public class RequestMapper {
 		return requestJpaEntity;
 	}
 
-	public Request mapToDomainEntity(RequestEntity requestJpaEntity) {
-		// TODO Auto-generated method stub
-		return null;
+	public Request mapToDomainEntity(RequestEntity requestJpaEntity) throws ValidationException {
+		Request request = new Request(requestJpaEntity.getOwner(), requestJpaEntity.getTimeInterval(), requestJpaEntity.getVideoFileName());
+		request.setIdRequest(requestJpaEntity.getIdRequest());
+		request.setId(requestJpaEntity.getId());		
+		request.setStatus(RequestStatus.values()[(int) (requestJpaEntity.getIdRequestStatus() - 1)]);
+		request.setRemarks(requestJpaEntity.getRemarks());
+		request.setVideoUploadUrl(requestJpaEntity.getVideoUploadUrl());
+		request.setVideoDownloadUrl(requestJpaEntity.getVideoDownloadUrl());
+		return request;
 	}
 }
