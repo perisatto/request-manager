@@ -30,6 +30,7 @@ public class S3RepositoryManagement implements FileRepositoryManagement{
 	@Override
 	public String generateUploadFileURL(String id, String videoFile) {
 		
+		String awsS3Bucket = env.getProperty("spring.aws.s3bucket");
 		String awsAccessKeyId = env.getProperty("spring.aws.accessKeyId");
 		String awsSecretAccessKey = env.getProperty("spring.aws.secretAccessKey");
 		String awsSessionToken = env.getProperty("spring.aws.sessionToken");
