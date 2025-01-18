@@ -59,7 +59,7 @@ public class RequestRepositoryJpa implements RequestRepository {
 
 	@Override
 	public Set<Request> findAll(Integer limit, Integer page, String owner) throws Exception {		
-		Pageable pageable = PageRequest.of(page, limit, Sort.by("idCustomer"));
+		Pageable pageable = PageRequest.of(page, limit, Sort.by("idRequest"));
 		Page<RequestEntity> requests = requestPersistenceRepository.findByOwner(owner, pageable);
 		Set<Request> requestsSet = new LinkedHashSet<Request>();
 		
