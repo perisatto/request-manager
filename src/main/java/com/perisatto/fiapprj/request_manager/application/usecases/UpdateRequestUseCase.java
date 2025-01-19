@@ -10,6 +10,7 @@ import com.perisatto.fiapprj.request_manager.application.interfaces.RequestRepos
 import com.perisatto.fiapprj.request_manager.domain.entities.Request;
 import com.perisatto.fiapprj.request_manager.domain.entities.RequestStatus;
 import com.perisatto.fiapprj.request_manager.handler.exceptions.NotFoundException;
+import com.perisatto.fiapprj.request_manager.handler.exceptions.ValidationException;
 
 public class UpdateRequestUseCase {
 	
@@ -32,6 +33,14 @@ public class UpdateRequestUseCase {
 		}
 		
 		Request updatedRequest = request.get();
+		
+		if(updatedRequest.getStatus() == status) {
+			throw new ValidationException("rqst-1002", "Request already " + status.toString());
+		} else {
+			if (updatedRequest.getStatus().getId() > status.getId()) {
+				throw new ValidationException("rqst-1003", "Request can't go back to " + status.toString() + " status");
+			}
+		}
 		
 		if(remarks != null) {
 			updatedRequest.setRemarks(remarks);

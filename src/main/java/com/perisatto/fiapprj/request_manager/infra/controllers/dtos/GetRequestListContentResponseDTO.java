@@ -2,11 +2,13 @@ package com.perisatto.fiapprj.request_manager.infra.controllers.dtos;
 
 import com.perisatto.fiapprj.request_manager.domain.entities.RequestStatus;
 
-public class UpdateRequestResponseDTO {
+public class GetRequestListContentResponseDTO {
 	private String id;
 	private Integer interval;
 	private String videoFileName;
 	private RequestStatus status;
+	private String remarks;
+	
 	public String getId() {
 		return id;
 	}
@@ -31,6 +33,14 @@ public class UpdateRequestResponseDTO {
 	public void setStatus(RequestStatus status) {
 		this.status = status;
 	}
-	
-	
+	public String getRemarks() {
+		return remarks;
+	}
+	public void setRemarks(String remarks) {
+		if(remarks == null) {
+			this.remarks = "";
+		} else {
+			this.remarks = remarks;
+		}
+	}
 }

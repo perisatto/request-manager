@@ -34,7 +34,7 @@ spring:
     s3DownloadBucket: ${AWS_S3_DOWNLOAD_BUCKET}
 
   rabbitmq:
-    host: localhost
-    port: 5672
-    username: guest
-    password: guest
+    host: ${RABBITMQ_HOST}
+    port: ${RABBITMQ_PORT}
+    username: ${RABBITMQ_USER}
+    password: ${RABBITMQ_PASSWORD}
