@@ -52,6 +52,6 @@ public class FileProcessorQueueManagementTest {
 		
 		fileProcessorQueueManagement.createProcessingRequest(request);
 		
-		verify(template, times(1)).convertAndSend(any(String.class), any(RequestMessage.class));
+		verify(template, times(1)).convertAndSend(any(String.class), any(Request.class));
 	}
 }

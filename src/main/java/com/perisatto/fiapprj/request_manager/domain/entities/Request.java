@@ -1,5 +1,6 @@
 package com.perisatto.fiapprj.request_manager.domain.entities;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import org.apache.logging.log4j.LogManager;
@@ -7,8 +8,10 @@ import org.apache.logging.log4j.Logger;
 
 import com.perisatto.fiapprj.request_manager.handler.exceptions.ValidationException;
 
-public class Request {
+public class Request implements Serializable{
 
+	private static final long serialVersionUID = 1L;
+	
 	private Long idRequest;
 	private String id;
 	private String owner;
