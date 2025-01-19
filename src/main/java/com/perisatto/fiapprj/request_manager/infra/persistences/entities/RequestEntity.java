@@ -21,7 +21,6 @@ public class RequestEntity {
 	private String remarks;
 	private String videoUploadUrl;
 	private String videoDownloadUrl;
-	
 	public Long getIdRequest() {
 		return idRequest;
 	}
@@ -43,8 +42,8 @@ public class RequestEntity {
 	public Integer getTimeInterval() {
 		return timeInterval;
 	}
-	public void setTimeInterval(Integer interval) {
-		this.timeInterval = interval;
+	public void setTimeInterval(Integer timeInterval) {
+		this.timeInterval = timeInterval;
 	}
 	public Long getIdRequestStatus() {
 		return idRequestStatus;

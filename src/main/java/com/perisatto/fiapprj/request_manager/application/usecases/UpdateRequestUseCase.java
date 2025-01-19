@@ -29,7 +29,7 @@ public class UpdateRequestUseCase {
 		Optional<Request> request = requestRepository.getRequestById(id);
 		
 		if(request.isEmpty()) {
-			throw new NotFoundException("rqst-1001", "Customer not found");
+			throw new NotFoundException("rqst-1001", "Request not found");
 		}
 		
 		Request updatedRequest = request.get();
