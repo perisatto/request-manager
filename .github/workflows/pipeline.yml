@@ -24,6 +24,7 @@ jobs:
       RABBITMQ_PORT: '${{RABBITMQ_PORT}}'
       RABBITMQ_USER: '${{RABBITMQ_USER}}'
       RABBITMQ_PASSWORD: '${{RABBITMQ_PASSWORD}}'
+      RABBITMQ_SSL: '${{RABBITMQ_SSL}}'
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 22
@@ -84,6 +85,7 @@ jobs:
       RABBITMQ_PORT: '${{RABBITMQ_PORT}}'
       RABBITMQ_USER: '${{RABBITMQ_USER}}'
       RABBITMQ_PASSWORD: '${{RABBITMQ_PASSWORD}}'
+      RABBITMQ_SSL: '${{RABBITMQ_SSL}}'
     steps:
       - uses: actions/checkout@v4
       - name: Set up JDK 22
@@ -148,6 +150,7 @@ jobs:
       RABBITMQ_PORT: '${{RABBITMQ_PORT}}'
       RABBITMQ_USER: '${{RABBITMQ_USER}}'
       RABBITMQ_PASSWORD: '${{RABBITMQ_PASSWORD}}'
+      RABBITMQ_SSL: '${{RABBITMQ_SSL}}'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -177,4 +180,4 @@ jobs:
           --set mysql_password=$MYSQL_PASSWORD --set aws_access_key_id=$AWS_ACCESS_KEY_ID --set aws_secret_access_key=$AWS_SECRET_ACCESS_KEY \
           --set aws_session_token=$AWS_SESSION_TOKEN --set aws_region=$AWS_REGION --set aws_s3_upload_bucket=$AWS_S3_UPLOAD_BUCKET \
           --set aws_s3_download_bucket=$AWS_S3_DOWNLOAD_BUCKET --set rabbitmq_host=$RABBITMQ_HOST --set rabbitmq_port=$RABBITMQ_PORT \
-          --set rabbitmq_user=$RABBITMQ_USER --set rabbitmq_password=$RABBITMQ_PASSWORD ./helm-chart
+          --set rabbitmq_user=$RABBITMQ_USER --set rabbitmq_password=$RABBITMQ_PASSWORD --set rabbitmq_ssl=$RABBITMQ_SSL ./helm-chart
