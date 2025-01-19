@@ -35,13 +35,13 @@ public class Request {
 
 		if((videoFileName == null) || (videoFileName.isEmpty()) || (videoFileName.isBlank())){
 			logger.debug("Error validating request data: empty, null or blank videoFileName");
-			throw new ValidationException("rqst-1001", "Error validating product data: empty, null or blank videoFileName");			
+			throw new ValidationException("rqst-1001", "Error validating request data: empty, null or blank videoFileName");			
 		}
-
-		this.id = UUID.randomUUID().toString();		
-		this.owner = owner;
-		this.interval = interval;
-		this.videoFileName = videoFileName;
+				
+		this.setId(UUID.randomUUID().toString());		
+		this.setOwner(owner);
+		this.setInterval(interval);
+		this.setVideoFileName(videoFileName);
 	}
 
 	public Long getIdRequest() {

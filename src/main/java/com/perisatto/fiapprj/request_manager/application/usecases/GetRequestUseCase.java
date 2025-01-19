@@ -38,7 +38,7 @@ public class GetRequestUseCase {
 			return request;
 			
 		} else {
-			throw new NotFoundException("cstm-1004", "Customer not found");
+			throw new NotFoundException("cstm-1004", "Request not found");
 		}
 	}
 	

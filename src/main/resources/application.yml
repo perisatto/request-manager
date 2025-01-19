@@ -38,3 +38,5 @@ spring:
     port: ${RABBITMQ_PORT}
     username: ${RABBITMQ_USER}
     password: ${RABBITMQ_PASSWORD}
+    ssl:
+      enabled: ${RABBITMQ_SSL}
