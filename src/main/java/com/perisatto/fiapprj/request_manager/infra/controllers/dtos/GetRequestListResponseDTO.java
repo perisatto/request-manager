@@ -17,7 +17,7 @@ public class GetRequestListResponseDTO {
 	private Integer pageElements;
 	
 	@JsonProperty(value = "_content")
-	private Set<GetRequestListContentResponseDTO> content = new LinkedHashSet<>();
+	private Set<GetRequestListResponseDTO> content = new LinkedHashSet<>();
 	
 	public Integer getPage() {
 		return page;
@@ -43,11 +43,11 @@ public class GetRequestListResponseDTO {
 		this.pageElements = pageElements;
 	}
 
-	public Set<GetRequestListContentResponseDTO> getContent() {
+	public Set<GetRequestListResponseDTO> getContent() {
 		return content;
 	}
 
-	public void setContent(Set<GetRequestListContentResponseDTO> content) {
+	public void setContent(Set<GetRequestListResponseDTO> content) {
 		this.content = content;
 	}
 	
@@ -58,7 +58,7 @@ public class GetRequestListResponseDTO {
 		ModelMapper requestMapper = new ModelMapper();
 		
 		for(Request request : content) {
-			GetRequestListContentResponseDTO newRequestResponse = requestMapper.map(request, GetRequestListContentResponseDTO.class);
+			GetRequestListResponseDTO newRequestResponse = requestMapper.map(request, GetRequestListResponseDTO.class);
 			this.content.add(newRequestResponse);
 		}
 	}
