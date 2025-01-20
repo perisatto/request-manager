@@ -33,8 +33,8 @@ aws_s3_upload_bucket: ${AWS_S3_UPLOAD_BUCKET}
 aws_s3_download_bucket: ${AWS_S3_DOWNLOAD_BUCKET}
 
 #Configurações da instância RabbitMQ
-rabbitmq_host: "${RABBITMQ_HOST}"
-rabbitmq_port: "${RABBITMQ_PORT}"
-rabbitmq_user: "${RABBITMQ_USER}"
-rabbitmq_password: "${RABBITMQ_PASSWORD}"
-rabbitmq_ssl: "${RABBITMQ_SSL}"
+rabbitmq_host: ${RABBITMQ_HOST}
+rabbitmq_port: ${RABBITMQ_PORT}
+rabbitmq_user: ${RABBITMQ_USER}
+rabbitmq_password: ${RABBITMQ_PASSWORD}
+rabbitmq_ssl: ${RABBITMQ_SSL}
