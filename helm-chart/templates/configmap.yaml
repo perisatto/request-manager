@@ -1,9 +1,13 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: menuguru-customer-config
+  name: request-manager-config
 data:
   mysql_url: {{ .Values.mysqlUrl }}:{{ .Values.mysqlPort }}
-  payment_host_webhook: {{ .Values.payment_hostWebhook }}
   aws_region: {{ .Values.aws_region }}
-  mongodb_url: {{ .Values.mongodb_url }}  
+  aws_access_key_id: {{ .Values.aws_access_key_id }}
+  aws_s3_upload_bucket: {{ .Values.aws_s3_upload_bucket }}
+  aws_s3_download_bucket: {{ .Values.aws_s3_download_bucket }}
+  rabbitmq_host: {{ .Values.rabbitmq_host }}  
+  rabbitmq_port: {{ .Values.rabbitmq_port }}
+  rabbitmq_ssl: {{ .Values.rabbitmq_ssl }}
