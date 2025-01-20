@@ -4,25 +4,25 @@
   "type": "object",
   "properties": {
     "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "interval": {
       "type": "number"
     },
-    "documentNumber": {
+    "videoFileName": {
       "type": "string",
       "minLength": 1
     },
-    "name": {
-      "type": "string",
-      "minLength": 1
-    },
-    "email": {
+    "status": {
       "type": "string",
       "minLength": 1
     }
   },
   "required": [
     "id",
-    "documentNumber",
-    "name",
-    "email"
+    "interval",
+    "videoFileName",
+    "status"
   ]
 }
