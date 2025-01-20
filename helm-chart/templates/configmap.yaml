@@ -9,5 +9,5 @@ data:
   aws_s3_upload_bucket: {{ .Values.aws_s3_upload_bucket }}
   aws_s3_download_bucket: {{ .Values.aws_s3_download_bucket }}
   rabbitmq_host: {{ .Values.rabbitmq_host }}  
-  rabbitmq_port: {{ .Values.rabbitmq_port }}
+  rabbitmq_port: "{{ .Values.rabbitmq_port }}"
   rabbitmq_ssl: "{{ .Values.rabbitmq_ssl }}"
