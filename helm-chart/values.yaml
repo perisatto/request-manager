@@ -24,6 +24,17 @@ mysqlPort: ${MYSQL_PORT}
 mysql_user: ${MYSQL_USER}
 mysql_password: ${MYSQL_PASSWORD}
 
-#Configurações do provedor autenticação (AWS Cognito)
-aws_cognito_user_pool_id: ${AWS_COGNITO_USER_POOL_ID64}
+#Configurações AWS
+aws_access_key_id: ${AWS_ACCESS_KEY_ID}
+aws_secret_access_key: ${AWS_SECRET_ACCESS_KEY}
+aws_session_token: ${AWS_SESSION_TOKEN}
 aws_region: ${AWS_REGION}
+aws_s3_upload_bucket: ${AWS_S3_UPLOAD_BUCKET}
+aws_s3_download_bucket: ${AWS_S3_DOWNLOAD_BUCKET}
+
+#Configurações da instância RabbitMQ
+rabbitmq_host: ${RABBITMQ_HOST}
+rabbitmq_port: ${RABBITMQ_PORT}
+rabbitmq_user: ${RABBITMQ_USER}
+rabbitmq_password: ${RABBITMQ_PASSWORD}
+rabbitmq_ssl: ${RABBITMQ_SSL}

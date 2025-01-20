@@ -1,0 +1,36 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "description": "",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "interval": {
+      "type": "number"
+    },
+    "videoFileName": {
+      "type": "string",
+      "minLength": 1
+    },
+    "videoDownloadUrl": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string",
+      "minLength": 1
+    },
+    "remarks": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "id",
+    "interval",
+    "videoFileName",
+    "videoDownloadUrl",
+    "status",
+    "remarks"
+  ]
+}
