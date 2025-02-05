@@ -59,7 +59,7 @@ public class UpdateRequestUseCaseTest {
 			
 			requestData.setStatus(RequestStatus.PENDING_UPLOAD);
 			
-			when(requestRepository.getRequestById(any(String.class)))
+			when(requestRepository.getRequestByOwnerAndId(any(String.class), any(String.class)))
 			.thenReturn(Optional.of(requestData));
 			
 			when(requestRepository.updateRequest(any(Request.class)))
@@ -68,7 +68,7 @@ public class UpdateRequestUseCaseTest {
 				return request;
 			});
 			
-			Request newRequest = updateRequestUseCase.updateRequest(requestData.getId(), "No remarks", RequestStatus.PENDING_PROCESS);
+			Request newRequest = updateRequestUseCase.updateRequest(owner, requestData.getId(), "No remarks", RequestStatus.PENDING_PROCESS);
 			
 			assertThat(newRequest.getStatus()).isEqualTo(RequestStatus.PENDING_PROCESS);
 		}
@@ -83,7 +83,7 @@ public class UpdateRequestUseCaseTest {
 			
 			requestData.setStatus(RequestStatus.PENDING_UPLOAD);
 			
-			when(requestRepository.getRequestById(any(String.class)))
+			when(requestRepository.getRequestByOwnerAndId(any(String.class), any(String.class)))
 			.thenReturn(Optional.of(requestData));
 			
 			when(requestRepository.updateRequest(any(Request.class)))
@@ -92,7 +92,7 @@ public class UpdateRequestUseCaseTest {
 				return request;
 			});
 			
-			Request newRequest = updateRequestUseCase.updateRequest(requestData.getId(), null, RequestStatus.PENDING_PROCESS);
+			Request newRequest = updateRequestUseCase.updateRequest(owner, requestData.getId(), null, RequestStatus.PENDING_PROCESS);
 			
 			assertThat(newRequest.getStatus()).isEqualTo(RequestStatus.PENDING_PROCESS);
 		}
@@ -107,7 +107,7 @@ public class UpdateRequestUseCaseTest {
 			
 			requestData.setStatus(RequestStatus.PENDING_UPLOAD);
 			
-			when(requestRepository.getRequestById(any(String.class)))
+			when(requestRepository.getRequestByOwnerAndId(any(String.class), any(String.class)))
 			.thenReturn(Optional.of(requestData));
 			
 			when(requestRepository.updateRequest(any(Request.class)))
@@ -116,7 +116,7 @@ public class UpdateRequestUseCaseTest {
 				return request;
 			});
 			
-			Request newRequest = updateRequestUseCase.updateRequest(requestData.getId(), null, RequestStatus.COMPLETED);
+			Request newRequest = updateRequestUseCase.updateRequest(owner, requestData.getId(), null, RequestStatus.COMPLETED);
 			
 			assertThat(newRequest.getStatus()).isEqualTo(RequestStatus.COMPLETED);
 		}
@@ -131,7 +131,7 @@ public class UpdateRequestUseCaseTest {
 			
 			requestData.setStatus(RequestStatus.PENDING_UPLOAD);
 			
-			when(requestRepository.getRequestById(any(String.class)))
+			when(requestRepository.getRequestByOwnerAndId(any(String.class), any(String.class)))
 			.thenReturn(Optional.of(requestData));
 			
 			when(requestRepository.updateRequest(any(Request.class)))
@@ -141,7 +141,7 @@ public class UpdateRequestUseCaseTest {
 			});
 			
 			try {
-				Request newRequest = updateRequestUseCase.updateRequest(requestData.getId(), null, RequestStatus.PENDING_UPLOAD);
+				Request newRequest = updateRequestUseCase.updateRequest(owner, requestData.getId(), null, RequestStatus.PENDING_UPLOAD);
 			} catch (Exception e) {
 				assertThatExceptionOfType(ValidationException.class);
 				assertThat(e.getMessage()).contains("Request already");
@@ -158,7 +158,7 @@ public class UpdateRequestUseCaseTest {
 			
 			requestData.setStatus(RequestStatus.PENDING_PROCESS);
 			
-			when(requestRepository.getRequestById(any(String.class)))
+			when(requestRepository.getRequestByOwnerAndId(any(String.class), any(String.class)))
 			.thenReturn(Optional.of(requestData));
 			
 			when(requestRepository.updateRequest(any(Request.class)))
@@ -168,7 +168,7 @@ public class UpdateRequestUseCaseTest {
 			});
 			
 			try {
-				Request newRequest = updateRequestUseCase.updateRequest(requestData.getId(), null, RequestStatus.PENDING_UPLOAD);
+				Request newRequest = updateRequestUseCase.updateRequest(owner, requestData.getId(), null, RequestStatus.PENDING_UPLOAD);
 			} catch (Exception e) {
 				assertThatExceptionOfType(ValidationException.class);
 				assertThat(e.getMessage()).contains("Request can't go back");
@@ -185,7 +185,7 @@ public class UpdateRequestUseCaseTest {
 			
 			requestData.setStatus(RequestStatus.PENDING_PROCESS);
 			
-			when(requestRepository.getRequestById(any(String.class)))
+			when(requestRepository.getRequestByOwnerAndId(any(String.class), any(String.class)))
 			.thenReturn(Optional.empty());
 			
 			when(requestRepository.updateRequest(any(Request.class)))
@@ -195,7 +195,7 @@ public class UpdateRequestUseCaseTest {
 			});
 			
 			try {
-				Request newRequest = updateRequestUseCase.updateRequest(requestData.getId(), null, RequestStatus.PENDING_UPLOAD);
+				Request newRequest = updateRequestUseCase.updateRequest(owner, requestData.getId(), null, RequestStatus.PENDING_UPLOAD);
 			} catch (Exception e) {
 				assertThatExceptionOfType(NotFoundException.class);
 				assertThat(e.getMessage()).contains("Request not found");
