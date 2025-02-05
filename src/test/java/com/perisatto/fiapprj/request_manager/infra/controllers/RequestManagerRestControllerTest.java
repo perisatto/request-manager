@@ -39,6 +39,8 @@ public class RequestManagerRestControllerTest {
 	
 	private MockMvc mockMvc;
 	
+	private String token = "eyJraWQiOiI1ZzhpN01DZ0dUZVZYRGkrT3pWTHlzU1Z3R3JFbzlJMTF6MXBxSXVuY2xVPSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI1NDA4NjRlOC02MDAxLTcwMDUtZWIyOS1kOGQyMjU3ZGI1ZWUiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiaXNzIjoiaHR0cHM6XC9cL2NvZ25pdG8taWRwLnVzLWVhc3QtMS5hbWF6b25hd3MuY29tXC91cy1lYXN0LTFfYkR6SG5QNWhNIiwiY3VzdG9tOmlkIjoiMSIsImNvZ25pdG86dXNlcm5hbWUiOiI1NDA4NjRlOC02MDAxLTcwMDUtZWIyOS1kOGQyMjU3ZGI1ZWUiLCJnaXZlbl9uYW1lIjoiTm9tZSBTb2JyZW5vbWUiLCJvcmlnaW5fanRpIjoiZDM4YmRlZDktMzhmYS00OTM3LTgxY2EtN2FiNzFiZDBjNGJlIiwiYXVkIjoiMjk5NWs1Z3IybmNzM21ibzhiMjlyOWc0ZDAiLCJldmVudF9pZCI6ImM0Mzc0NjM4LWFhNWItNDQ4NC05Nzc2LTVlOTU2MzBmMjQ2NyIsInRva2VuX3VzZSI6ImlkIiwiYXV0aF90aW1lIjoxNzM4NzE2MTUyLCJleHAiOjE3Mzg3MTk3NTIsImlhdCI6MTczODcxNjE1MiwianRpIjoiYjczZGE4MDMtMjg2NC00ZDkzLTg5ODEtMWVmZDA0YjFlY2FjIiwiZW1haWwiOiJyb2RyaWdvQHBlcmlzYXR0by5jb20ifQ.ThTF3NrN6cPi04Tdmmopbg-aKEW8HbFlmOUfAp3B3fFo-YIo6DGi1Mkd3-3tho-eXiRBh4XSjbN0ul7jqClJaYnjSkykhsAbgPSsSNyDFiWD7Y5IXyVuBHtHRjKFd-uLfemPXyTXo4ye2kT06gQeAgr1QyVf1BCW0MPhhWuw8U8X9FPxHnEXgPZp2d6R1TWxUubzn2OWGrb4CJ1raZjP-blxXdHq2aCVE_Nh-ylzS_elEbd9R_G57uzHdZf8n5fCSJhMtsAV6KM0L2FWAJ-C22XHl7jManXHOgxvN4C2URZDsxOILmR68fb1KNlCh8KSzBfOXE-39zvE6HL-y2uYrQ";
+	
 	@Mock
 	private CreateRequestUseCase createRequestUseCase;
 	
@@ -92,6 +94,7 @@ public class RequestManagerRestControllerTest {
 			createRequestRequestDTO.setVideoFileName("JohnCenaChairFight.mpeg");
 			
 			mockMvc.perform(post("/users/{userId}/requests", owner)
+					.header("Authorization", token)
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(asJsonString(createRequestRequestDTO)))
 			.andExpect(status().isCreated());		
