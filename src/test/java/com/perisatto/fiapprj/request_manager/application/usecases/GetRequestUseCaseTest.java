@@ -60,10 +60,10 @@ public class GetRequestUseCaseTest {
 			
 			requestData.setStatus(RequestStatus.PENDING_UPLOAD);
 			
-			when(requestRepository.getRequestById(any(String.class)))
+			when(requestRepository.getRequestByOwnerAndId(any(String.class), any(String.class)))
 			.thenReturn(Optional.of(requestData));
 			
-			Request request = getRequestUseCase.getRequestById(requestData.getId());
+			Request request = getRequestUseCase.getRequestById(owner, requestData.getId());
 			
 			assertThat(request.getId()).isEqualTo(requestData.getId());
 		}
@@ -78,13 +78,13 @@ public class GetRequestUseCaseTest {
 			
 			requestData.setStatus(RequestStatus.COMPLETED);
 			
-			when(requestRepository.getRequestById(any(String.class)))
+			when(requestRepository.getRequestByOwnerAndId(any(String.class), any(String.class)))
 			.thenReturn(Optional.of(requestData));
 			
 			when(fileRepositoryManagement.generateDownloadFileURL(any(String.class), any(String.class)))
 			.thenReturn("http://localhost");
 			
-			Request request = getRequestUseCase.getRequestById(requestData.getId());
+			Request request = getRequestUseCase.getRequestById(owner, requestData.getId());
 			
 			assertThat(request.getVideoDownloadUrl()).isEqualTo("http://localhost");
 		}
@@ -92,11 +92,11 @@ public class GetRequestUseCaseTest {
 		@Test
 		void givenInexistentRequestId_theGetRequestData() throws Exception {
 			
-			when(requestRepository.getRequestById(any(String.class)))
+			when(requestRepository.getRequestByOwnerAndId(any(String.class), any(String.class)))
 			.thenReturn(Optional.empty());
 			
 			try {
-			Request request = getRequestUseCase.getRequestById(UUID.randomUUID().toString());
+			Request request = getRequestUseCase.getRequestById("me", UUID.randomUUID().toString());
 			} catch (Exception e) {
 				assertThatExceptionOfType(ValidationException.class);
 				assertThat(e.getMessage()).contains("Request not found");

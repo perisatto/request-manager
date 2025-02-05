@@ -10,7 +10,7 @@ import com.perisatto.fiapprj.request_manager.infra.persistences.entities.Request
 
 public interface RequestPersistenceRepository extends JpaRepository<RequestEntity, Long> {
 	
-	Optional<RequestEntity> findById(String id);
+	Optional<RequestEntity> findByOwnerAndId(String owner, String id);
 
 	Page<RequestEntity> findByOwner(String owner, Pageable pageable); 
 }

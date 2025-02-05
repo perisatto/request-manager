@@ -71,24 +71,24 @@ public class RequestRepositoryJpaTest {
 		
 		RequestEntity requestEntity = getRequest(); 
 		
-		when(requestPersistenceRepository.findById(any(String.class)))
+		when(requestPersistenceRepository.findByOwnerAndId(any(String.class), any(String.class)))
 		.thenReturn(Optional.of(requestEntity));
 		
-		requestRepositoryJpa.getRequestById(requestEntity.getId());
+		requestRepositoryJpa.getRequestByOwnerAndId("me", requestEntity.getId());
 		
-		verify(requestPersistenceRepository, times(1)).findById(any(String.class));
+		verify(requestPersistenceRepository, times(1)).findByOwnerAndId(any(String.class), any(String.class));
 	}
 	
 
 	@Test
 	void givenInexistentId_thenRefusesRetrieveRequest() throws Exception {
 		
-		when(requestPersistenceRepository.findById(any(String.class)))
+		when(requestPersistenceRepository.findByOwnerAndId(any(String.class), any(String.class)))
 		.thenReturn(Optional.empty());
 		
-		requestRepositoryJpa.getRequestById(UUID.randomUUID().toString());
+		requestRepositoryJpa.getRequestByOwnerAndId("me", UUID.randomUUID().toString());
 		
-		verify(requestPersistenceRepository, times(1)).findById(any(String.class));
+		verify(requestPersistenceRepository, times(1)).findByOwnerAndId(any(String.class), any(String.class));
 	}
 	
 	@Test
