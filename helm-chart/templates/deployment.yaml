@@ -20,6 +20,7 @@ spec:
       containers:
         - name: request-manager-service
           image: rperisatto/request-manager:{{ .Values.image.tag }}
+          imagePullPolicy: Always
           env:
             - name: MYSQL_URL
               valueFrom:
