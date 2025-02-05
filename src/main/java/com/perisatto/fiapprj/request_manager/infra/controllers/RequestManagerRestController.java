@@ -51,11 +51,11 @@ public class RequestManagerRestController {
 			@RequestBody CreateRequestRequestDTO createRequest) throws Exception {
 		requestProperties.setProperty("resourcePath", "/users/" + userId + "/requests");
 		
-		System.out.print("Authorization header " + header);
+		System.out.print("Authorization header " + header);		
 		
-//		if(userId == "me") {
-//			userId = GetUserFromToken.getUser(header);
-//		}
+		if("me".equals(userId)) {
+			userId = GetUserFromToken.getUser(header);
+		}
 		
 		Request request = createRequestUseCase.createRequest(userId, createRequest.getInterval(), createRequest.getVideoFileName());		
 		ModelMapper requestMapper = new ModelMapper();
