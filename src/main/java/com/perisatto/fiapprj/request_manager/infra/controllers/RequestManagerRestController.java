@@ -5,7 +5,6 @@ import java.util.Properties;
 import java.util.Set;
 
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties.Jwt;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -47,11 +46,9 @@ public class RequestManagerRestController {
 
 	@PostMapping(value = "/users/{userId}/requests", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<CreateRequestResponseDTO> createCustomer(@PathVariable(value = "userId") String userId,
-			@RequestHeader(value = "Authorization") String header,
+			@RequestHeader(value = "Authorization", required = false) String header,
 			@RequestBody CreateRequestRequestDTO createRequest) throws Exception {
 		requestProperties.setProperty("resourcePath", "/users/" + userId + "/requests");
-		
-		System.out.print("Authorization header " + header);		
 		
 		if("me".equals(userId)) {
 			userId = GetUserFromToken.getUser(header);
@@ -65,8 +62,17 @@ public class RequestManagerRestController {
 	}
 	
 	@GetMapping(value = "/users/{userId}/requests", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GetRequestListResponseDTO> getAll(@PathVariable(value = "userId") String userId, @RequestParam(value = "_page", required = true) Integer page, @RequestParam(value = "_size", required = true) Integer size) throws Exception {
+	public ResponseEntity<GetRequestListResponseDTO> getAll(@PathVariable(value = "userId") String userId,
+			@RequestHeader(value = "Authorization", required = false) String header,
+			@RequestParam(value = "_page", required = true) Integer page, 
+			@RequestParam(value = "_size", required = true) Integer size) throws Exception {
+		
 		requestProperties.setProperty("resourcePath", "/users/" + userId + "/requests");
+		
+		if("me".equals(userId)) {
+			userId = GetUserFromToken.getUser(header);
+		}
+		
 		Set<Request> request = getRequestUseCase.findAllRequests(size, page, userId);
 		GetRequestListResponseDTO response = new GetRequestListResponseDTO();
 		response.setContent(request, page, size);
@@ -75,21 +81,36 @@ public class RequestManagerRestController {
 	
 	
 	@GetMapping(value = "/users/{userId}/requests/{requestId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<GetRequestResponseDTO> get(@PathVariable(value = "userId") String userId, @PathVariable(value = "requestId") String requestId) throws Exception {
+	public ResponseEntity<GetRequestResponseDTO> get(@PathVariable(value = "userId") String userId, 
+			@RequestHeader(value = "Authorization", required = false) String header,
+			@PathVariable(value = "requestId") String requestId) throws Exception {
+		
 		requestProperties.setProperty("resourcePath", "/users/" + userId + "/requests/" + requestId);
 		
-		Request request = getRequestUseCase.getRequestById(requestId);
+		if("me".equals(userId)) {
+			userId = GetUserFromToken.getUser(header);
+		}
+		
+		Request request = getRequestUseCase.getRequestById(userId, requestId);
 		ModelMapper requestMapper = new ModelMapper();
 		GetRequestResponseDTO response = requestMapper.map(request, GetRequestResponseDTO.class);
 		return ResponseEntity.status(HttpStatus.OK).body(response);
 	}
 	
 	@PatchMapping(value = "/users/{userId}/requests/{requestId}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<UpdateRequestResponseDTO> patch(@PathVariable(value = "userId") String userId, @PathVariable(value = "requestId") String requestId, @RequestBody UpdateRequestRequestDTO updateRequest) throws Exception{
+	public ResponseEntity<UpdateRequestResponseDTO> patch(@PathVariable(value = "userId") String userId, 
+			@RequestHeader(value = "Authorization", required = false) String header,
+			@PathVariable(value = "requestId") String requestId, 
+			@RequestBody UpdateRequestRequestDTO updateRequest) throws Exception{
+		
 		requestProperties.setProperty("resourcePath", "/users/" + userId + "/requests/" + requestId);
 		
+		if("me".equals(userId)) {
+			userId = GetUserFromToken.getUser(header);
+		}
+		
 		RequestStatus status = RequestStatus.valueOf(updateRequest.getStatus());				
-		Request request = updateRequestUseCase.updateRequest(requestId, updateRequest.getRemarks(), status);
+		Request request = updateRequestUseCase.updateRequest(userId, requestId, updateRequest.getRemarks(), status);
 		ModelMapper requestMapper = new ModelMapper();
 		UpdateRequestResponseDTO updateRequestResponseDTO = requestMapper.map(request, UpdateRequestResponseDTO.class);
 		return ResponseEntity.status(HttpStatus.OK).body(updateRequestResponseDTO);

@@ -24,9 +24,9 @@ public class UpdateRequestUseCase {
 		this.fileProcessingManagement = fileProcessingManagement;
 	}
 	
-	public Request updateRequest(String id, String remarks, RequestStatus status) throws Exception {
+	public Request updateRequest(String owner, String id, String remarks, RequestStatus status) throws Exception {
 		
-		Optional<Request> request = requestRepository.getRequestById(id);
+		Optional<Request> request = requestRepository.getRequestByOwnerAndId(owner, id);
 		
 		if(request.isEmpty()) {
 			throw new NotFoundException("rqst-1001", "Request not found");

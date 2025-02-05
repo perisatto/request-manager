@@ -44,10 +44,10 @@ public class RequestRepositoryJpa implements RequestRepository {
 	}
 
 	@Override
-	public Optional<Request> getRequestById(String id) throws Exception {
+	public Optional<Request> getRequestByOwnerAndId(String owner, String id) throws Exception {
 		Request request;
 		
-		Optional<RequestEntity> requestEntity = requestPersistenceRepository.findById(id);
+		Optional<RequestEntity> requestEntity = requestPersistenceRepository.findByOwnerAndId(owner, id);
 		if(requestEntity.isPresent()) {
 			request = requestMapper.mapToDomainEntity(requestEntity.get());
 		} else {

@@ -115,7 +115,7 @@ public class RequestManagerRestControllerTest {
 			Request request = new Request(owner, interval, videoFileName);
 			request.setStatus(RequestStatus.PENDING_PROCESS);
 			
-			when(updateRequestUseCase.updateRequest(any(String.class), any(String.class), any(RequestStatus.class)))
+			when(updateRequestUseCase.updateRequest(any(String.class), any(String.class), any(String.class), any(RequestStatus.class)))
 			.thenReturn(request);
 			
 			UpdateRequestRequestDTO updateRequestRequestDTO = new UpdateRequestRequestDTO();
@@ -123,11 +123,12 @@ public class RequestManagerRestControllerTest {
 			updateRequestRequestDTO.setRemarks("No more remarks");
 			
 			mockMvc.perform(patch("/users/{userId}/requests/{requestId}", owner, UUID.randomUUID().toString())
+					.header("Authorization", token)
 					.contentType(MediaType.APPLICATION_JSON)
 					.content(asJsonString(updateRequestRequestDTO)))
 			.andExpect(status().isOk());
 			
-			verify(updateRequestUseCase, times(1)).updateRequest(any(String.class), any(String.class), any(RequestStatus.class));
+			verify(updateRequestUseCase, times(1)).updateRequest(any(String.class), any(String.class), any(String.class), any(RequestStatus.class));
 		}
 	}
 	
@@ -143,14 +144,15 @@ public class RequestManagerRestControllerTest {
 			Request request = new Request(owner, interval, videoFileName);
 			request.setStatus(RequestStatus.PENDING_PROCESS);
 			
-			when(getRequestUseCase.getRequestById(any(String.class)))
+			when(getRequestUseCase.getRequestById(any(String.class), any(String.class)))
 			.thenReturn(request);
 			
 			mockMvc.perform(get("/users/{userId}/requests/{requestId}", owner, UUID.randomUUID().toString())
+					.header("Authorization", token)
 					.contentType(MediaType.APPLICATION_JSON))
 			.andExpect(status().isOk());
 			
-			verify(getRequestUseCase, times(1)).getRequestById(any(String.class));
+			verify(getRequestUseCase, times(1)).getRequestById(any(String.class), any(String.class));
 		}
 		
 		@Test
@@ -169,6 +171,7 @@ public class RequestManagerRestControllerTest {
 			});
 			
 			mockMvc.perform(get("/users/{userId}/requests", "me")
+					.header("Authorization", token)
 					.contentType(MediaType.APPLICATION_JSON)
 					.param("_page", "1")
 					.param("_size", "50"))

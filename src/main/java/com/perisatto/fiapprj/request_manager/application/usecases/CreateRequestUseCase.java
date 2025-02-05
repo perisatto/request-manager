@@ -21,21 +21,11 @@ public class CreateRequestUseCase {
 	}
 	
 	public Request createRequest(String userId, Integer interval, String videoFileName) throws Exception {
-		
-		if("me".equals(userId)) {
-			userId = getUserIdFromToken();
-		}
-		
 		Request request = new Request(userId, interval, videoFileName);
 		request.setStatus(RequestStatus.PENDING_UPLOAD);
 		request.setVideoUploadUrl(fileRepositoryManagement.generateUploadFileURL(request.getId(), request.getVideoFileName()));
 		requestRepository.createRequest(request);		
 				
 		return request;
-	}
-
-	private String getUserIdFromToken() {
-		// TODO create function to get userId attribute from authentication token
-		return "me";
 	}
 }

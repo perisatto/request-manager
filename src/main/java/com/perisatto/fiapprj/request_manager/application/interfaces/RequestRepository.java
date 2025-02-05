@@ -11,7 +11,7 @@ public interface RequestRepository {
 
 	Optional<Request> updateRequest(Request request) throws Exception;
 	
-	Optional<Request> getRequestById(String id) throws Exception;
+	Optional<Request> getRequestByOwnerAndId(String owner, String id) throws Exception;
 	
 	Set<Request> findAll(Integer limit, Integer offset, String owner) throws Exception;
 }
